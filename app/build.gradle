@@ -57,6 +57,9 @@ dependencies {
     // 核心 基础库
     implementation rootProject.ext.coreLibs
 
+    // 三方 工具库
+    implementation rootProject.ext.otherLibs
+
     // 计算器模块
     implementation project(path: ':LibCalculator')
 

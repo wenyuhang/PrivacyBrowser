@@ -10,6 +10,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.orhanobut.logger.Logger
 import com.privacy.browser.databinding.ActivityBrowserBinding
 import vam.osoles.dores.oll.webconfig.MyWebChromeClient
 import vam.osoles.dores.oll.webconfig.MyWebViewClient
@@ -22,17 +23,21 @@ import vam.osoles.dores.oll.webconfig.WebConfigListener
  * version :
  * desc    : 浏览器页面
  **/
-
-class BrowserActivity : AppCompatActivity() , WebConfigListener {
+class BrowserActivity : AppCompatActivity() , WebConfigListener
+{
     private lateinit var binding: ActivityBrowserBinding
 
     private var h5Url:String? = null
+
+    private lateinit var mWebView:WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBrowserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        h5Url = "https://www.baidu.com/"
+//        h5Url = "https://www.baidu.com/"
+//        h5Url = "https://mex11apptest.qinjia001.com/ghmas/index.html"
+        h5Url = "https://www.qinjia2018.com/index"
         initView()
     }
 
@@ -41,7 +46,7 @@ class BrowserActivity : AppCompatActivity() , WebConfigListener {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        val mWebView = WebView(this)
+        mWebView = WebView(this)
         mWebView.layoutParams = params
         initWebSetting(mWebView)
     }
@@ -71,11 +76,10 @@ class BrowserActivity : AppCompatActivity() , WebConfigListener {
             }
 //            it.addJavascriptInterface(new AndroidH5Interface(WebViewActivity.this), "android");
             h5Url?.let {
-                webView.loadUrl(it)
+                webView.loadUrl(h5Url!!)
             }
+            binding.root.addView(webView)
         }
-
-        binding.root.addView(webView)
     }
 
     override fun onProgressChanged(newProgress: Int) {
@@ -91,6 +95,7 @@ class BrowserActivity : AppCompatActivity() , WebConfigListener {
 
     override fun onReceivedError() {
 //        TODO("Not yet implemented")
+        println("===========================")
     }
 
     override fun shouldOverrideUrl(url: String?): Boolean {
@@ -110,8 +115,11 @@ class BrowserActivity : AppCompatActivity() , WebConfigListener {
 //        }catch (e: Exception){
 //            return true;
 //        }
-//        webView.loadUrl(url);
-        return true;
+//        if (url != null) {
+//            mWebView.loadUrl(url)
+//        };
+//        Logger.d(url)
+        return false;
     }
 
     override fun onPageFinished(url: String?) {

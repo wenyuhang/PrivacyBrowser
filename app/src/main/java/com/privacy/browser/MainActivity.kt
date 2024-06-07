@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.orhanobut.logger.Logger
 import com.privacy.browser.databinding.ActivityMainBinding
@@ -23,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListener() {
-        Log.d("TAG", "initListener: ")
+        Logger.d("initListener: ")
         binding.btnReset.setOnClickListener {
             changeLogo(launcherArray[0])
         }
@@ -40,11 +39,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, BrowserActivity::class.java))
             Logger.d("test")
         }
+//        startActivity(Intent(this@MainActivity, BrowserActivity::class.java))
     }
 
     private fun changeLogo(name: String) {
         val packageManager = applicationContext.packageManager
-        Log.d("TAG", "componentName: $componentName")
+        Logger.d("componentName: $componentName")
         // 去掉旧图标
         packageManager.setComponentEnabledSetting(
             componentName,

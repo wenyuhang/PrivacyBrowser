@@ -32,6 +32,7 @@ class MyWebViewClient(private val webConfigListener: WebConfigListener) : WebVie
         request: WebResourceRequest,
         error: WebResourceError
     ) {
+//        println("==========================="+error.errorCode+error.description)
         webConfigListener.onReceivedError()
         super.onReceivedError(view, request, error)
     }
