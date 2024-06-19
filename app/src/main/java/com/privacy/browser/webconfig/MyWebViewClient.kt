@@ -1,4 +1,4 @@
-package vam.osoles.dores.oll.webconfig
+package com.privacy.browser.webconfig
 
 import android.net.http.SslError
 import android.os.Build
@@ -8,6 +8,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
+import com.orhanobut.logger.Logger
+import vam.osoles.dores.oll.webconfig.WebConfigListener
 
 /**
  * author  : WYH
@@ -32,7 +34,10 @@ class MyWebViewClient(private val webConfigListener: WebConfigListener) : WebVie
         request: WebResourceRequest,
         error: WebResourceError
     ) {
-//        println("==========================="+error.errorCode+error.description)
+        /**  错误日志打印   */
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            println("Error===>${request.url}==${error.errorCode}==${error.description}");
+        }
         webConfigListener.onReceivedError()
         super.onReceivedError(view, request, error)
     }

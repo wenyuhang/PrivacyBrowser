@@ -7,6 +7,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.orhanobut.logger.Logger
 import com.privacy.browser.databinding.ActivityMainBinding
+import com.privacy.browser.ui.BrowserActivity
+import com.privacy.browser.ui.BrowserRouterActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -22,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListener() {
-        Logger.d("initListener: ")
         binding.btnReset.setOnClickListener {
             changeLogo(launcherArray[0])
         }
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, BrowserActivity::class.java))
             Logger.d("test")
         }
-//        startActivity(Intent(this@MainActivity, BrowserActivity::class.java))
+        startActivity(Intent(this@MainActivity, BrowserRouterActivity::class.java))
     }
 
     private fun changeLogo(name: String) {

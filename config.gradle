@@ -4,7 +4,7 @@ ext {
             applicationId    : "com.privacy.browser",
             namespace        : 'com.privacy.browser',
             compileSdk       : 33,
-            minSdk           : 21,
+            minSdk           : 24,
             targetSdk        : 33,
             versionCode      : 100,
             versionName      : "v1.0.0"
@@ -28,6 +28,13 @@ ext {
             constraintlayout     : "androidx.constraintlayout:constraintlayout:$dependVersion.constraintlayoutVersion",
     ]
 
+    junit = "junit:junit:4.13.2"
+
+    androidTest = [
+            junit       : "androidx.test.ext:junit:1.1.5",
+            espresso    : "androidx.test.espresso:espresso-core:3.5.1"
+    ]
+
 
 
     other = [
@@ -42,5 +49,7 @@ ext {
 
 
     coreLibs = coreDeps.values()
+    junitLib = junit
+    androidTestLibs = androidTest.values()
     otherLibs = other.values()
 }
