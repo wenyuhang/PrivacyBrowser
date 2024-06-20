@@ -3,6 +3,9 @@ package com.privacy.browser
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import com.king.retrofit.retrofithelper.RetrofitHelper
+import com.privacy.browser.constants.Constants
+import dagger.hilt.android.HiltAndroidApp
 import java.util.LinkedList
 
 /**
@@ -12,7 +15,7 @@ import java.util.LinkedList
  * version : 1.0.0
  * desc    : application
  **/
-
+@HiltAndroidApp
 class App : Application(){
 
     companion object {
@@ -23,6 +26,8 @@ class App : Application(){
     override fun onCreate() {
         super.onCreate()
         initConfig()
+        // 如果你没有使用FrameConfigModule中的第一中方式初始化BaseUrl，也可以通过第二种方式来设置BaseUrl（二选其一即可）
+        RetrofitHelper.getInstance().setBaseUrl(Constants.BASE_URL)
     }
 
     /**

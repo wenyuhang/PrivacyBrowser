@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
 }
 
 android {
@@ -26,17 +28,13 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildFeatures {
         dataBinding = true
-        viewBinding = true
+//        viewBinding = true
         buildConfig = true
     }
 }
@@ -52,12 +50,18 @@ dependencies {
     androidTestImplementation rootProject.ext.androidTestLibs
 
     // 核心 基础库
-    implementation rootProject.ext.coreLibs
+    implementation project(path: ':LibFrame')
 
     // 三方 工具库
     implementation rootProject.ext.otherLibs
 
+
+    implementation rootProject.ext.base_adapter
+    implementation rootProject.ext.base_util
+
     // 计算器模块
     implementation project(path: ':LibCalculator')
 
+    api rootProject.ext.hilt_android
+    kapt  rootProject.ext.hilt_compiler
 }

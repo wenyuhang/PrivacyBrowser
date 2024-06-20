@@ -3,9 +3,9 @@ ext {
     android = [
             applicationId    : "com.privacy.browser",
             namespace        : 'com.privacy.browser',
-            compileSdk       : 33,
+            compileSdk       : 34,
             minSdk           : 24,
-            targetSdk        : 33,
+            targetSdk        : 34,
             versionCode      : 100,
             versionName      : "v1.0.0"
     ]
@@ -15,17 +15,26 @@ ext {
             materialVersion         : "1.8.0",
             constraintlayoutVersion : "2.1.4",
             multidexVersion         : "2.0.1",
-            retrofitSdkVersion      : "2.9.0",
             loggerVersion           : "2.2.0",
-            okhttpUtilsVersion      : "2.6.2",
+
+
+
+            room : "2.6.1",
+            gson : "2.10.1",
+            okhttp     : "4.12.0",
+            retrofit      : "2.9.0",
+            base : "3.2.1-androidx",
     ]
 
     coreDeps = [
-            //--------  support  -------
+            //--------  support  -------//
             corektx              : "androidx.core:core-ktx:1.9.0",
             appcompat            : "androidx.appcompat:appcompat:$dependVersion.appcompatVersion",
             material             : "com.google.android.material:material:$dependVersion.materialVersion",
             constraintlayout     : "androidx.constraintlayout:constraintlayout:$dependVersion.constraintlayoutVersion",
+            //--------  lifecycle  -------//
+            lifecycle_runtime_ktx : "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0",
+            lifecycle_viewmodel_ktx: "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0",
     ]
 
     junit = "junit:junit:4.13.2"
@@ -47,6 +56,34 @@ ext {
 //            gson               : 'com.google.code.gson:gson:2.10.1'
     ]
 
+    //--------  dagger-hilt  -------//
+    hilt_android  =  "com.google.dagger:hilt-android:2.51"
+    hilt_compiler = "com.google.dagger:hilt-compiler:2.51"
+
+    // room
+    room_runtime = "androidx.room:room-runtime:$dependVersion.room"
+    room_ktx = "androidx.room:room-ktx:$dependVersion.room"
+    room_compiler = "androidx.room:room-compiler:$dependVersion.room"
+
+    // okhttp
+    okhttp = "com.squareup.okhttp3:okhttp:$dependVersion.okhttp"
+    logging_interceptor = "com.squareup.okhttp3:logging-interceptor:$dependVersion.okhttp"
+
+    // retrofit2
+    retrofit = "com.squareup.retrofit2:retrofit:$dependVersion.retrofit"
+    converter_gson = "com.squareup.retrofit2:converter-gson:$dependVersion.retrofit"
+    gson = "com.google.code.gson:gson:$dependVersion.gson"
+
+    retrofit_helper = "com.github.jenly1314:retrofit-helper:1.1.0"
+
+    // 这是一款拥有小型、可扩展API的日志记录器
+    timber = "com.jakewharton.timber:timber:5.0.1"
+    // toast
+    toaster = "com.github.getActivity:Toaster:12.6"
+    // BaseRecyclerViewAdapterHelper
+    base_adapter= "com.github.jenly1314.Base:adapter:$dependVersion.base"
+    //
+    base_util = "com.github.jenly1314.Base:util:$dependVersion.base"
 
     coreLibs = coreDeps.values()
     junitLib = junit
