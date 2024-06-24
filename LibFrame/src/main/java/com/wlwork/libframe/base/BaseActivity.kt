@@ -9,6 +9,10 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.Window
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +28,7 @@ import com.wlwork.libframe.utils.JumpDebounce
 import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
+
 /**
  * author  : WYH
  * e-mail  : wenyuhang@qinjiakonggu.com
@@ -32,24 +37,27 @@ import java.lang.reflect.ParameterizedType
  * desc    : baseactivity
  **/
 
-abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),IView<VM>{
+abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppCompatActivity(),
+    IView<VM> {
 
     lateinit var viewModel: VM
         private set
 
-    var viewDataBinding: VDB? = null
-        private set
+    private var viewDataBinding: VDB? = null
+
     val binding: VDB
         get() = viewDataBinding!!
 
-    var dialog: Dialog? = null
-        private set
-    var progressDialog: Dialog? = null
-        private set
+    private var dialog: Dialog? = null
+
+    private var progressDialog: Dialog? = null
 
     private val jumpDebounce by lazy {
         JumpDebounce()
     }
+
+    // 跳转回调
+    var resultLauncher: ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +78,8 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     open fun initContentView() {
         if (isBinding()) {
             viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
+            // 数据绑定
+            binding.lifecycleOwner = this
         } else {
             setContentView(getLayoutId())
         }
@@ -103,11 +113,11 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
     private fun getVMClass(): Class<VM> {
         var cls: Class<*>? = javaClass
         var vmClass: Class<VM>? = null
-        while (vmClass == null && cls != null){
+        while (vmClass == null && cls != null) {
             vmClass = getVMClass(cls)
             cls = cls.superclass
         }
-        if (vmClass == null){
+        if (vmClass == null) {
             vmClass = BaseViewModel::class.java as Class<VM>
         }
         return vmClass
@@ -308,4 +318,35 @@ abstract class BaseActivity<VM : BaseViewModel, VDB : ViewDataBinding> : AppComp
      * 获取[Context]
      */
     fun getContext() = this
+
+
+    /**
+     * 注册物理回退键 回调
+     */
+    open fun registerBack(operation: ((OnBackPressedCallback) -> Unit)? = null) {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // 如果不处理，则移除当前回调并执行默认的返回行为
+                if (operation != null) {
+                    // runBlocking 函数可以创建了一个阻塞的协程作用域，在这个作用域内运行的协程会阻止程序结束，直到所有的子协程都完成
+                    operation(this)
+                } else {
+                    remove()
+                    finish()
+                }
+            }
+        })
+    }
+
+    /**
+     * 注册跳转回调 StartActivityForResult()
+     */
+    open fun registerLauncher(operation: (ActivityResult) -> Unit) {
+        // 搜索回调
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                operation(it)
+            }
+    }
+
 }

@@ -12,4 +12,7 @@
 
     <color name="color_FF_C2C2C2">#C2C2C2</color>
     <color name="color_FF_F5F5F5">#F5F5F5</color>
+    <color name="color_FF_333333">#333333</color>
+    <color name="color_FF_FFFFFF">#FFFFFF</color>
+    <color name="color_FF_A9A9A9">#A9A9A9</color>
 </resources>

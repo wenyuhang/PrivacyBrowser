@@ -9,7 +9,6 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.annotation.RequiresApi
 import com.orhanobut.logger.Logger
-import vam.osoles.dores.oll.webconfig.WebConfigListener
 
 /**
  * author  : WYH
@@ -44,12 +43,21 @@ class MyWebViewClient(private val webConfigListener: WebConfigListener) : WebVie
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-        val url = request.url.toString()
-        return webConfigListener.shouldOverrideUrl(url)
+        return try {
+            val url = request.url.toString()
+            webConfigListener.shouldOverrideUrl(url)
+        }catch (e: Exception){
+            super.shouldOverrideUrlLoading(view, request)
+        }
+
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        return webConfigListener.shouldOverrideUrl(url)
+        return try {
+            webConfigListener.shouldOverrideUrl(url)
+        }catch (e: Exception){
+            super.shouldOverrideUrlLoading(view,url)
+        }
     }
 
     override fun onPageFinished(view: WebView, url: String) {

@@ -23,6 +23,8 @@
             android:exported="false" />
         <activity android:name=".ui.WebSearchActivity"
             android:exported="false"/>
+        <activity android:name=".ui.BrowserHistoryActivity"
+            android:exported="false"/>
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -74,6 +76,8 @@
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
 <!--        </activity-alias>-->
+
+
     </application>
 
 </manifest>

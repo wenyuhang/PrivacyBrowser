@@ -1,4 +1,4 @@
-package com.privacy.browser.constants
+package com.privacy.browser.config
 
 /**
  * @author <a href="mailto:jenly1314@gmail.com">Jenly</a>
@@ -23,4 +23,10 @@ object Constants {
 
     const val DOMAIN_DICTIONARY = "dictionary"
     const val DOMAIN_JENLY = "jenly1314"
+
+    const val DATA = "data"
+    const val WEB_TITLE = "webTitle"
+    const val WEB_LINK  = "webLink"
+
+    const val LOGGER_TAG = "TAG_com_privacy_browser"
 }

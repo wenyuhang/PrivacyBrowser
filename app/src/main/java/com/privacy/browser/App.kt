@@ -1,12 +1,9 @@
 package com.privacy.browser
 
-import android.app.Activity
 import android.app.Application
-import android.content.Context
 import com.king.retrofit.retrofithelper.RetrofitHelper
-import com.privacy.browser.constants.Constants
+import com.privacy.browser.config.Constants
 import dagger.hilt.android.HiltAndroidApp
-import java.util.LinkedList
 
 /**
  * author  : WYH
@@ -28,6 +25,8 @@ class App : Application(){
         initConfig()
         // 如果你没有使用FrameConfigModule中的第一中方式初始化BaseUrl，也可以通过第二种方式来设置BaseUrl（二选其一即可）
         RetrofitHelper.getInstance().setBaseUrl(Constants.BASE_URL)
+
+
     }
 
     /**
@@ -49,7 +48,7 @@ class App : Application(){
                 .showThreadInfo(true) // (Optional) Whether to show thread info or not. Default true
                 .methodCount(6) // (Optional) How many method line to show. Default 2
                 .methodOffset(7) // (Optional) Hides internal method calls up to offset. Default 5
-                .tag(Constant.LOGGER_TAG) // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .tag(Constants.LOGGER_TAG) // (Optional) Global tag for every log. Default PRETTY_LOGGER
                 .build()
         com.orhanobut.logger.Logger.addLogAdapter(object :
             com.orhanobut.logger.AndroidLogAdapter(formatStrategy) {

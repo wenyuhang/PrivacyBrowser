@@ -32,6 +32,10 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
     buildFeatures {
         dataBinding = true
 //        viewBinding = true
@@ -40,11 +44,6 @@ android {
 }
 
 dependencies {
-
-
-//
-//    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
-//    implementation 'androidx.activity:activity-compose:1.7.0'
 
     testImplementation rootProject.ext.junitLib
     androidTestImplementation rootProject.ext.androidTestLibs
@@ -62,6 +61,10 @@ dependencies {
     // 计算器模块
     implementation project(path: ':LibCalculator')
 
+    // hilt
     api rootProject.ext.hilt_android
     kapt  rootProject.ext.hilt_compiler
+
+    // room 注解处理器
+    kapt rootProject.ext.room_compiler
 }

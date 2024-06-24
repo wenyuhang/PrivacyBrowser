@@ -1,28 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="data"
-            type="com.privacy.browser.pojo.SearchHistoryBean" />
+            type="com.privacy.browser.pojo.SearchHistory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="40dp"
+        android:paddingLeft="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/img_history"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@mipmap/ic_history"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@mipmap/ic_delete"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="40dp"
-            tools:text="https://map.baidu.com/@12967503,4838434,15z"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
             android:gravity="center_vertical"
-            android:text="@{data.searchStr}"
-            />
+            android:maxLines="1"
+            android:text="@{data.word}"
+            app:layout_constraintLeft_toRightOf="@id/img_history"
+            app:layout_constraintRight_toLeftOf="@id/btn_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="https://map.baidu.com/@12967503,4838434,15z535123132131" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

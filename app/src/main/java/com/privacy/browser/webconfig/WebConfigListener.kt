@@ -1,4 +1,4 @@
-package vam.osoles.dores.oll.webconfig
+package com.privacy.browser.webconfig
 
 import android.net.Uri
 import android.webkit.ValueCallback
@@ -17,6 +17,6 @@ interface WebConfigListener {
 
     // webviewclient //
     fun onReceivedError()
-    fun shouldOverrideUrl(url: String?): Boolean
+    fun shouldOverrideUrl(url: String): Boolean
     fun onPageFinished(url: String?)
 }
