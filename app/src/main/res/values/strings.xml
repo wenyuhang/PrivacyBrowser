@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PrivacyBrowser</string>
 
+    <string name="txt_tab_home">首页</string>
+    <string name="txt_tab_broswer">浏览器</string>
+    <string name="txt_tab_mine">我的</string>
+
     <!-- Error -->
     <string name="result_connect_failed_error">服务器连接失败，请稍后再试。</string>
     <string name="result_connect_timeout_error">服务器连接超时，请稍后再试。</string>

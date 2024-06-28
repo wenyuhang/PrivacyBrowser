@@ -3,7 +3,7 @@ package com.privacy.browser
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.ViewDataBinding
-import com.privacy.browser.ui.BrowserActivity
+import com.privacy.browser.ui.MainActivity
 import com.wlwork.libframe.base.BaseActivity
 import com.wlwork.libframe.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity<BaseViewModel,ViewDataBinding>() {
     }
 
     override fun initData(savedInstanceState: Bundle?) {
-        startActivity(Intent(this@SplashActivity, BrowserActivity::class.java))
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
         finish()
     }
 }

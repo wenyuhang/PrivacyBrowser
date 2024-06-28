@@ -1,5 +1,6 @@
 package com.privacy.browser.webconfig
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient

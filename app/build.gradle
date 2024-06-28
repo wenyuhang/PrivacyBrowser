@@ -67,4 +67,5 @@ dependencies {
 
     // room 注解处理器
     kapt rootProject.ext.room_compiler
+
 }

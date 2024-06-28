@@ -2,18 +2,16 @@ package com.privacy.browser.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.orhanobut.logger.Logger
 import com.privacy.browser.R
 import com.privacy.browser.databinding.ActivityBrowserRouterBinding
-import com.privacy.browser.ui.vm.BrowserVMImpl
+import com.privacy.browser.ui.vm.BrowserRouterVMImpl
+import com.wlwork.libframe.base.BaseActivity
+import com.wlwork.libframe.utils.LiveDataBus
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.UnsupportedEncodingException
 import java.net.URL
 import java.net.URLDecoder
-import java.util.stream.Collectors
 
 /**
  * author  : WYH
@@ -23,17 +21,23 @@ import java.util.stream.Collectors
  * desc    : 浏览器路由界面
  **/
 
-class BrowserRouterActivity: AppCompatActivity() {
+@AndroidEntryPoint
+class BrowserRouterActivity: BaseActivity<BrowserRouterVMImpl,ActivityBrowserRouterBinding>() {
 
-    private lateinit var binding: ActivityBrowserRouterBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // 绑定view
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_browser_router)
+    override fun getLayoutId(): Int {
+        return R.layout.activity_browser_router
+    }
 
-        binding.lifecycleOwner = this
+    override fun initData(savedInstanceState: Bundle?) {
+        binding.vm = viewModel
         binding.state = this@BrowserRouterActivity
+        LiveDataBus.get()
+            .with("key_test",String::class.java)
+            .observe(this){
+                viewModel.updateRecentList(binding.recentList)
+                Logger.d("打印了$it")
+            }
     }
 
     fun jumpSearchPage(){

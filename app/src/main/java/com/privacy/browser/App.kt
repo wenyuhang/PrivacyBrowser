@@ -1,6 +1,8 @@
 package com.privacy.browser
 
+import android.app.Activity
 import android.app.Application
+import android.os.Bundle
 import com.king.retrofit.retrofithelper.RetrofitHelper
 import com.privacy.browser.config.Constants
 import dagger.hilt.android.HiltAndroidApp
@@ -14,19 +16,52 @@ import dagger.hilt.android.HiltAndroidApp
  **/
 @HiltAndroidApp
 class App : Application(){
-
+    lateinit var curActivity: Activity
     companion object {
         //生产环境、开发环境区分 true:开发 false:生产
         var envConfig: Boolean = BuildConfig.DEBUG
+
+        lateinit var app: App
     }
 
     override fun onCreate() {
         super.onCreate()
+        app = this
+
         initConfig()
         // 如果你没有使用FrameConfigModule中的第一中方式初始化BaseUrl，也可以通过第二种方式来设置BaseUrl（二选其一即可）
         RetrofitHelper.getInstance().setBaseUrl(Constants.BASE_URL)
 
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks{
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
 
+            }
+
+            override fun onActivityStarted(activity: Activity) {
+                curActivity = activity
+            }
+
+            override fun onActivityResumed(activity: Activity) {
+
+            }
+
+            override fun onActivityPaused(activity: Activity) {
+
+            }
+
+            override fun onActivityStopped(activity: Activity) {
+
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+
+            }
+
+            override fun onActivityDestroyed(activity: Activity) {
+
+            }
+
+        })
     }
 
     /**

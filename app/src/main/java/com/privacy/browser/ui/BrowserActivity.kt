@@ -8,16 +8,13 @@ import android.webkit.ValueCallback
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.LinearLayout
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import com.orhanobut.logger.Logger
 import com.privacy.browser.R
 import com.privacy.browser.config.Constants
 import com.privacy.browser.databinding.ActivityBrowserBinding
 import com.privacy.browser.ui.vm.BrowserVMImpl
-import com.privacy.browser.webconfig.MyWebViewClient
 import com.privacy.browser.webconfig.MyWebChromeClient
+import com.privacy.browser.webconfig.MyWebViewClient
 import com.privacy.browser.webconfig.WebConfigListener
 import com.privacy.browser.webconfig.WebViewUtils
 import com.wlwork.libframe.base.BaseActivity
@@ -66,6 +63,7 @@ class BrowserActivity : BaseActivity<BrowserVMImpl, ActivityBrowserBinding>() {
         // 跳转至搜索页面
         binding.btnShowWebUrl.setOnClickListener {
             resultLauncher?.launch(viewModel.getBuildIntent(this))
+
         }
         // 点击时间
         binding.btnSearchEngine.setOnClickListener {

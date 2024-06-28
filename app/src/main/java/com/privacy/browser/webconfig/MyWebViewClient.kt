@@ -62,6 +62,28 @@ class MyWebViewClient(private val webConfigListener: WebConfigListener) : WebVie
 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
+        // 关闭百度打开页面
+        closeBaiDuOpenModule(view)
+
         webConfigListener.onPageFinished(url)
+    }
+
+    /**
+     * 关闭百度打开页面
+     */
+    private fun closeBaiDuOpenModule(webView: WebView) {
+        try {
+            val jsCode = "document.getElementById('mainContentContainer').style.height='auto';" +
+                    "document.getElementById('mainContentContainer').style.overflow='auto';"+
+                    "document.getElementById('bdrainrwDragButton').style.display='none';"+
+                    "document.getElementById('headDeflectorContainer').style.display='none';"+
+                    "var elements = document.getElementsByClassName('foldMaskWrapper');" +
+                    "for (var i = 0; i < elements.length; i++) {" +
+                    "   elements[i].style.display = 'none';" +
+                    "}";
+            webView.evaluateJavascript(jsCode, null)
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 }
