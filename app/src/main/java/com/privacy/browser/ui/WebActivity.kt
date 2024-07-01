@@ -3,8 +3,7 @@ package com.privacy.browser.ui
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebSettings
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import com.orhanobut.logger.Logger
 import com.privacy.browser.R
 import com.privacy.browser.component.overview.CommonWebView
@@ -15,6 +14,8 @@ import com.privacy.browser.ui.vm.WebVMImpl
 import com.wlwork.libframe.base.BaseActivity
 import com.wlwork.libframe.utils.LiveDataBus
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * author  : WYH
@@ -43,7 +44,6 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         // 注册物理键back事件
         registerBack {
             // 如果不处理，则移除当前回调并执行默认的返回行为
-            //页面回退
             if (mWebView != null && mWebView?.canGoBack() == true) {
                 mWebView?.goBack()
             } else {
@@ -85,10 +85,16 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
                 viewModel.postWebUrl(url)
                 mWebView?.apply {
                     val pageTitle = title
-                    Logger.d("onPageFinished >>> $url \n $pageTitle")
+//                    Logger.d("onPageFinished >>> $url \n $pageTitle")
                     viewModel.postWebTitle(pageTitle)
                     // 插入数据库表
                     viewModel.insertSerarchHistory(title = pageTitle, link = url)
+                }
+            }
+
+            addOnProgressChanged {
+                if (it==100){
+
                 }
             }
 
@@ -141,4 +147,36 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         LiveDataBus.get().with("key_test").value = "addNewWindow"
     }
 
+    /**
+     * 点击事件：执行纯净模式
+     */
+    fun toPureMode(){
+        pureMode()
+    }
+
+
+    /**
+     * 纯净模式
+     */
+    private fun pureMode() {
+        // 检查是否有iframe
+        val js = "var list = document.querySelectorAll('iframe');" +
+                "console.log(list.length);" +
+                "if (list.length > 0) {" +
+                "console.log(list[0].src);" +
+                "window.location.replace(list[0].src);" +
+                "}"
+        mWebView.evaluateJavascript("(function() {$js})()", null)
+        lifecycleScope.launch {
+            delay(1000)
+            // 执行纯净模式 （移除所有img标签[src是.gif结尾的]）
+            val js2 = "let gifImages = Array.from(document.getElementsByTagName('img'))" +
+                    "                     .filter(img => img.src.endsWith('.gif'));" +
+                    "gifImages.forEach(img => {" +
+                    "    img.parentElement.removeChild(img);" +
+                    "});"
+            mWebView.evaluateJavascript("(function() {$js2})()", null)
+        }
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.privacy.browser
+package com.privacy.browser.config
 
 import com.privacy.browser.webconfig.WebViewUtils
 import dagger.Module

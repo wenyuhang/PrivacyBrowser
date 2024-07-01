@@ -6,6 +6,9 @@
     <data>
 
         <variable
+            name="state"
+            type="com.privacy.browser.ui.BrowserHistoryActivity" />
+        <variable
             name="vm"
             type="com.privacy.browser.ui.vm.BrowserHistoryVMImpl" />
     </data>
@@ -23,6 +26,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:src="@mipmap/ic_back"
+            android:onClick="@{()->state.onToBack()}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

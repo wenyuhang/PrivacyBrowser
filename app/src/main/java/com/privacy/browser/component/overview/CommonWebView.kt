@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -14,8 +15,8 @@ import java.net.URLDecoder
 
 
 @SuppressLint("SetJavaScriptEnabled", "ViewConstructor")
-class CommonWebView(context: Context): WebView(context) {
-//    var isInRecent = false
+class CommonWebView(context: Context) : WebView(context) {
+    //    var isInRecent = false
     init {
         settings.javaScriptEnabled = true
         settings.domStorageEnabled = true
@@ -23,7 +24,7 @@ class CommonWebView(context: Context): WebView(context) {
         settings.loadWithOverviewMode = true
         settings.databaseEnabled = true
 
-        webChromeClient = object : WebChromeClient(){
+        webChromeClient = object : WebChromeClient() {
             override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
                 icon?.let {
                     val bd = BitmapDrawable(context.resources, it)
@@ -38,10 +39,18 @@ class CommonWebView(context: Context): WebView(context) {
 
             }
 
-
+            /**
+             * 页面加载进度
+             */
+            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                super.onProgressChanged(view, newProgress)
+                onProgressChangedFun?.let {
+                    it(newProgress)
+                }
+            }
         }
 
-        webViewClient = object : WebViewClient(){
+        webViewClient = object : WebViewClient() {
 
             /**
              * 页面加载完成
@@ -57,11 +66,14 @@ class CommonWebView(context: Context): WebView(context) {
                 }
             }
 
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
                 return try {
                     val url = request?.url.toString()
                     shouldOverrideUrl(url)
-                }catch (e: Exception){
+                } catch (e: Exception) {
                     super.shouldOverrideUrlLoading(view, request)
                 }
             }
@@ -69,9 +81,21 @@ class CommonWebView(context: Context): WebView(context) {
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 return try {
                     shouldOverrideUrl(url)
-                }catch (e: Exception){
-                    super.shouldOverrideUrlLoading(view,url)
+                } catch (e: Exception) {
+                    super.shouldOverrideUrlLoading(view, url)
                 }
+            }
+
+            override fun shouldInterceptRequest(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): WebResourceResponse? {
+//                val url = request?.url.toString()
+//                if (url.endsWith(".gif")) {
+//                    return WebResourceResponse("text/html", "utf-8", null)
+//                }
+                return super.shouldInterceptRequest(view, request)
+
             }
         }
 
@@ -94,6 +118,14 @@ class CommonWebView(context: Context): WebView(context) {
         this.shouldOverrideUrlFun = operation
     }
 
+
+    /**
+     * 页面加载进度
+     */
+    private var onProgressChangedFun: ((Int) -> Unit)? = null
+    fun addOnProgressChanged(operation: (Int) -> Unit) {
+        this.onProgressChangedFun = operation
+    }
 
     /**
      * 加载的url
@@ -135,15 +167,15 @@ class CommonWebView(context: Context): WebView(context) {
     private fun closeBaiDuOpenModule(webView: WebView?) {
         try {
             val jsCode = "document.getElementById('mainContentContainer').style.height='auto';" +
-                    "document.getElementById('mainContentContainer').style.overflow='auto';"+
-                    "document.getElementById('bdrainrwDragButton').style.display='none';"+
-                    "document.getElementById('headDeflectorContainer').style.display='none';"+
+                    "document.getElementById('mainContentContainer').style.overflow='auto';" +
+                    "document.getElementById('bdrainrwDragButton').style.display='none';" +
+                    "document.getElementById('headDeflectorContainer').style.display='none';" +
                     "var elements = document.getElementsByClassName('foldMaskWrapper');" +
                     "for (var i = 0; i < elements.length; i++) {" +
                     "   elements[i].style.display = 'none';" +
                     "}";
             webView?.evaluateJavascript(jsCode, null)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }

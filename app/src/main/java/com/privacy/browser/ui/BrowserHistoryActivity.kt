@@ -38,6 +38,7 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        binding.state = this
         // 注册物理键back事件
         registerBack{
             callResultIntent(onBack = it)
@@ -59,6 +60,13 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
                 mAdapter.refreshData(it)
             }
         }
+    }
+
+    /**
+     * 点击退出
+     */
+    fun onToBack(){
+        callResultIntent()
     }
 
     /**
