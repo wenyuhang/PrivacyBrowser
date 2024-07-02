@@ -1,4 +1,4 @@
-package com.privacy.browser.database.dao
+package com.privacy.browser.repository.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

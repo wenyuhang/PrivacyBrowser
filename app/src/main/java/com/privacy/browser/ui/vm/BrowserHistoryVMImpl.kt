@@ -1,6 +1,6 @@
 package com.privacy.browser.ui.vm
 
-import com.privacy.browser.database.AppDataBase
+import com.privacy.browser.repository.database.AppDataBase
 import com.wlwork.libframe.base.BaseViewModel
 import com.wlwork.libframe.data.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel

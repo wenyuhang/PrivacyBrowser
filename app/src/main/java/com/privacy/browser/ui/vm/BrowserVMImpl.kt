@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import com.privacy.browser.config.Constants
-import com.privacy.browser.database.AppDataBase
+import com.privacy.browser.repository.database.AppDataBase
 import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.ui.WebSearchActivity
 import com.wlwork.libframe.base.BaseViewModel

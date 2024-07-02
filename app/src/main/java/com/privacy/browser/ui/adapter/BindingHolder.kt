@@ -1,4 +1,4 @@
-package com.privacy.browser.adapter
+package com.privacy.browser.ui.adapter
 
 import android.view.View
 import androidx.databinding.DataBindingUtil

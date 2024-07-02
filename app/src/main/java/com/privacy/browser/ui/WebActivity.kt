@@ -93,7 +93,7 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
             }
 
             addOnProgressChanged {
-                if (it==100){
+                if (it == 100) {
 
                 }
             }
@@ -103,7 +103,7 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
             }
 
             var pageTitle = title
-            if(pageTitle.isNullOrEmpty()){
+            if (pageTitle.isNullOrEmpty()) {
                 pageTitle = url
             }
             viewModel.postWebTitle(pageTitle)
@@ -150,15 +150,14 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
     /**
      * 点击事件：执行纯净模式
      */
-    fun toPureMode(){
+    fun toPureMode() {
         pureMode()
     }
 
-
     /**
-     * 纯净模式
+     * 点击事件：是否有iframe
      */
-    private fun pureMode() {
+    fun toIframe() {
         // 检查是否有iframe
         val js = "var list = document.querySelectorAll('iframe');" +
                 "console.log(list.length);" +
@@ -167,16 +166,20 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
                 "window.location.replace(list[0].src);" +
                 "}"
         mWebView.evaluateJavascript("(function() {$js})()", null)
-        lifecycleScope.launch {
-            delay(1000)
-            // 执行纯净模式 （移除所有img标签[src是.gif结尾的]）
-            val js2 = "let gifImages = Array.from(document.getElementsByTagName('img'))" +
-                    "                     .filter(img => img.src.endsWith('.gif'));" +
-                    "gifImages.forEach(img => {" +
-                    "    img.parentElement.removeChild(img);" +
-                    "});"
-            mWebView.evaluateJavascript("(function() {$js2})()", null)
-        }
+    }
+
+
+    /**
+     * 纯净模式
+     */
+    private fun pureMode() {
+        // 执行纯净模式 （移除所有img标签[src是.gif结尾的]）
+        val js2 = "let gifImages = Array.from(document.getElementsByTagName('img'))" +
+                "                     .filter(img => img.src.endsWith('.gif'));" +
+                "gifImages.forEach(img => {" +
+                "    img.parentElement.removeChild(img);" +
+                "});"
+        mWebView.evaluateJavascript("(function() {$js2})()", null)
 
     }
 }

@@ -3,11 +3,10 @@ package com.privacy.browser.ui.vm
 import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
-import com.privacy.browser.api.ApiService
+import com.privacy.browser.repository.api.ApiService
 import com.privacy.browser.config.Constants
-import com.privacy.browser.database.AppDataBase
+import com.privacy.browser.repository.database.AppDataBase
 import com.privacy.browser.pojo.SearchHistory
 import com.privacy.browser.ui.base.BaseViewModel
 import com.wlwork.libframe.data.Repository
@@ -15,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.launch
 import java.net.URLEncoder
 import javax.inject.Inject
 

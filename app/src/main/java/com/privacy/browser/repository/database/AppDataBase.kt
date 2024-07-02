@@ -1,9 +1,9 @@
-package com.privacy.browser.database
+package com.privacy.browser.repository.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.privacy.browser.database.dao.BrowserHistoryDao
-import com.privacy.browser.database.dao.SearchHistoryDao
+import com.privacy.browser.repository.database.dao.BrowserHistoryDao
+import com.privacy.browser.repository.database.dao.SearchHistoryDao
 import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.pojo.SearchHistory
 

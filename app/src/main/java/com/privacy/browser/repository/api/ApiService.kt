@@ -1,4 +1,4 @@
-package com.privacy.browser.api
+package com.privacy.browser.repository.api
 
 import com.privacy.browser.config.Constants
 import com.privacy.browser.pojo.Result

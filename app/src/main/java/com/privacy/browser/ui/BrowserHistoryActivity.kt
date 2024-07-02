@@ -8,11 +8,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orhanobut.logger.Logger
 import com.privacy.browser.R
-import com.privacy.browser.adapter.BindingAdapter
+import com.privacy.browser.ui.adapter.BindingAdapter
 import com.privacy.browser.config.Constants
 import com.privacy.browser.databinding.ActivityBrowserHistoryBinding
 import com.privacy.browser.pojo.BrowserHistory
-import com.privacy.browser.pojo.SearchHistory
 import com.privacy.browser.ui.vm.BrowserHistoryVMImpl
 import com.wlwork.libframe.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
