@@ -37,6 +37,8 @@ class WebVMImpl @Inject constructor(
     val pageWebTitle: MutableLiveData<String> = MutableLiveData()
     // 页面当前地址
     private val pageWebUrl: MutableLiveData<String> = MutableLiveData()
+    // 页面数量
+    val pageSize: MutableLiveData<String> = MutableLiveData()
 
 
     init {
@@ -105,6 +107,15 @@ class WebVMImpl @Inject constructor(
         }
     }
 
+
+    /**
+     * 传递当前webview数量
+     */
+    fun postWebSize(size: Int?){
+        size?.let {
+            pageSize.postValue(it.toString())
+        }
+    }
 
     fun getBuildIntent(activity: Activity): Intent {
         val intent = Intent(activity, WebSearchActivity::class.java)

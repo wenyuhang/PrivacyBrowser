@@ -65,4 +65,8 @@ dependencies {
     api rootProject.ext.timber
     // toast
     api rootProject.ext.toaster
+
+
+    // https://gitcode.net/mirrors/li-xiaojun/xpopup
+    api 'com.github.li-xiaojun:XPopup:2.9.16'
 }

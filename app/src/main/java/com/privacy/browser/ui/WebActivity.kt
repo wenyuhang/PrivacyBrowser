@@ -3,8 +3,6 @@ package com.privacy.browser.ui
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebSettings
-import androidx.lifecycle.lifecycleScope
-import com.orhanobut.logger.Logger
 import com.privacy.browser.R
 import com.privacy.browser.component.overview.CommonWebView
 import com.privacy.browser.component.overview.WebTabManager
@@ -14,8 +12,6 @@ import com.privacy.browser.ui.vm.WebVMImpl
 import com.wlwork.libframe.base.BaseActivity
 import com.wlwork.libframe.utils.LiveDataBus
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  * author  : WYH
@@ -78,18 +74,21 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
      * 配置webview
      */
     private fun initWebView() {
-        val wb = WebTabManager.getInstance().getCacheWebTab().last()
+        val cacheWebTab = WebTabManager.getInstance().getCacheWebTab()
+        val pageSize = cacheWebTab.size
+        viewModel.postWebSize(pageSize)
+        val wb = cacheWebTab.last()
         mWebView = wb.webView
         mWebView?.apply {
             addOnPageFinished {
                 viewModel.postWebUrl(url)
-                mWebView?.apply {
-                    val pageTitle = title
+                val pageTitle = mWebView.title
 //                    Logger.d("onPageFinished >>> $url \n $pageTitle")
-                    viewModel.postWebTitle(pageTitle)
-                    // 插入数据库表
-                    viewModel.insertSerarchHistory(title = pageTitle, link = url)
-                }
+                viewModel.postWebTitle(pageTitle)
+                // 插入数据库表
+                viewModel.insertSerarchHistory(title = pageTitle, link = url)
+                // 检查是否可以回退[左返回，右返回]
+                checkWebBack(mWebView)
             }
 
             addOnProgressChanged {
@@ -110,6 +109,22 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         }
 
         binding.flWebContainer.addView(mWebView)
+    }
+
+    /**
+     * 检查是否可以回退[左返回，右返回]
+     */
+    private fun checkWebBack(mWebView: CommonWebView) {
+        binding.btnToolsLeftBack.apply {
+            val canGoBack = mWebView.canGoBack()
+            isClickable = canGoBack
+            setImageResource(if (canGoBack) R.mipmap.ic_left_back_checked else R.mipmap.ic_left_back)
+        }
+        binding.btnToolsRightBack.apply {
+            val canGoForward = mWebView.canGoForward()
+            isClickable = canGoForward
+            setImageResource(if (canGoForward) R.mipmap.ic_right_back_checked else R.mipmap.ic_right_back)
+        }
     }
 
     override fun onResume() {
@@ -145,6 +160,28 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         WebTabManager.getInstance().divideAllWebView()
         finish()
         LiveDataBus.get().with("key_test").value = "addNewWindow"
+    }
+
+    /**
+     * 左返回【后返回】
+     */
+    fun toBack(){
+        mWebView?.apply {
+            if (canGoBack()) {
+                goBack()
+            }
+        }
+    }
+
+    /**
+     * 右返回【前返回】
+     */
+    fun toForward() {
+        mWebView?.apply {
+            if (canGoForward()) {
+                goForward()
+            }
+        }
     }
 
     /**
