@@ -31,10 +31,14 @@ interface BrowserHistoryDao {
     @Query("delete from browser_history")
     suspend fun deleteAll()
 
+
+    @Query("select COUNT(1) from browser_history")
+    suspend fun getTotalCount(): Int
     /**
      * 获取历史数据对应的[Flow]
      * @param size 获取历史纪录的条数
+     * @param offset 指针开始位置
      */
-    @Query("select * from browser_history order by timestamp desc limit :size")
-    fun getHistoryFlow(size: Int): Flow<List<BrowserHistory>?>
+    @Query("select * from browser_history order by timestamp desc limit :size offset :offset")
+    fun getHistoryFlow(size: Int,offset: Int): Flow<List<BrowserHistory>?>
 }

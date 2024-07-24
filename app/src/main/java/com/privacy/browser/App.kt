@@ -5,6 +5,9 @@ import android.app.Application
 import android.os.Bundle
 import com.king.retrofit.retrofithelper.RetrofitHelper
 import com.privacy.browser.config.Constants
+import com.scwang.smart.refresh.footer.ClassicsFooter
+import com.scwang.smart.refresh.header.MaterialHeader
+import com.scwang.smart.refresh.layout.SmartRefreshLayout
 import dagger.hilt.android.HiltAndroidApp
 
 /**
@@ -22,6 +25,16 @@ class App : Application(){
         var envConfig: Boolean = BuildConfig.DEBUG
 
         lateinit var app: App
+    }
+
+    init {
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator { context, layout ->
+            layout.setPrimaryColorsId(R.color.colorPrimary, R.color.white)
+            MaterialHeader(context)
+        }
+        SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
+            ClassicsFooter(context)
+        }
     }
 
     override fun onCreate() {

@@ -3,6 +3,7 @@ package com.privacy.browser.ui.adapter
 import android.content.Context
 import androidx.databinding.ViewDataBinding
 import com.king.base.adapter.BaseRecyclerAdapter
+import com.orhanobut.logger.Logger
 import com.privacy.browser.BR
 
 /**
@@ -30,6 +31,15 @@ class BindingAdapter<T> : BaseRecyclerAdapter<T, BindingHolder<ViewDataBinding>>
 
     fun getItem(position: Int): T? {
         return listData.getOrNull(position)
+    }
+
+    fun addData(list: List<T>?){
+        list?.let {
+            val allListData = listData
+            allListData.addAll(it)
+            listData = allListData
+            notifyDataSetChanged()
+        }
     }
 
     fun refreshData(list: List<T>?){

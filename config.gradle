@@ -1,63 +1,62 @@
 ext {
 
     android = [
-            applicationId    : "com.privacy.browser",
-            namespace        : 'com.privacy.browser',
-            compileSdk       : 34,
-            minSdk           : 24,
-            targetSdk        : 34,
-            versionCode      : 100,
-            versionName      : "v1.0.0"
+            applicationId: "com.privacy.browser",
+            namespace    : 'com.privacy.browser',
+            compileSdk   : 34,
+            minSdk       : 24,
+            targetSdk    : 34,
+            versionCode  : 100,
+            versionName  : "v1.0.0"
     ]
 
     dependVersion = [
-            appcompatVersion        : "1.6.1",
-            materialVersion         : "1.8.0",
-            constraintlayoutVersion : "2.1.4",
-            multidexVersion         : "2.0.1",
-            loggerVersion           : "2.2.0",
+            appcompatVersion       : "1.6.1",
+            materialVersion        : "1.8.0",
+            constraintlayoutVersion: "2.1.4",
+            multidexVersion        : "2.0.1",
+            loggerVersion          : "2.2.0",
 
 
 
-            room : "2.6.1",
-            gson : "2.10.1",
-            okhttp     : "4.12.0",
-            retrofit      : "2.9.0",
-            base : "3.2.1-androidx",
+            room                   : "2.6.1",
+            gson                   : "2.10.1",
+            okhttp                 : "4.12.0",
+            retrofit               : "2.9.0",
+            base                   : "3.2.1-androidx",
     ]
 
     coreDeps = [
             //--------  support  -------//
-            corektx              : "androidx.core:core-ktx:1.9.0",
-            appcompat            : "androidx.appcompat:appcompat:$dependVersion.appcompatVersion",
-            material             : "com.google.android.material:material:$dependVersion.materialVersion",
-            constraintlayout     : "androidx.constraintlayout:constraintlayout:$dependVersion.constraintlayoutVersion",
+            corektx                : "androidx.core:core-ktx:1.9.0",
+            appcompat              : "androidx.appcompat:appcompat:$dependVersion.appcompatVersion",
+            material               : "com.google.android.material:material:$dependVersion.materialVersion",
+            constraintlayout       : "androidx.constraintlayout:constraintlayout:$dependVersion.constraintlayoutVersion",
             //--------  lifecycle  -------//
-            lifecycle_runtime_ktx : "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0",
+            lifecycle_runtime_ktx  : "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0",
             lifecycle_viewmodel_ktx: "androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0",
     ]
 
     junit = "junit:junit:4.13.2"
 
     androidTest = [
-            junit       : "androidx.test.ext:junit:1.1.5",
-            espresso    : "androidx.test.espresso:espresso-core:3.5.1"
+            junit   : "androidx.test.ext:junit:1.1.5",
+            espresso: "androidx.test.espresso:espresso-core:3.5.1"
     ]
-
 
 
     other = [
             // multidex 多dex处理
-            multidex           :"androidx.multidex:multidex:$dependVersion.multidexVersion",
+            multidex: "androidx.multidex:multidex:$dependVersion.multidexVersion",
             // logger日志框架 https://gitcode.net/mirrors/orhanobut/logger
-            logger             : "com.orhanobut:logger:$dependVersion.loggerVersion",
+            logger  : "com.orhanobut:logger:$dependVersion.loggerVersion",
             // fastjson 数据解析  https://gitcode.net/mirrors/alibaba/fastjson
-            fastjson           : "com.alibaba:fastjson:1.2.4",
+            fastjson: "com.alibaba:fastjson:1.2.4",
 //            gson               : 'com.google.code.gson:gson:2.10.1'
     ]
 
     //--------  dagger-hilt  -------//
-    hilt_android  =  "com.google.dagger:hilt-android:2.51"
+    hilt_android = "com.google.dagger:hilt-android:2.51"
     hilt_compiler = "com.google.dagger:hilt-compiler:2.51"
 
     // room
@@ -81,12 +80,20 @@ ext {
     // toast
     toaster = "com.github.getActivity:Toaster:12.6"
     // BaseRecyclerViewAdapterHelper
-    base_adapter= "com.github.jenly1314.Base:adapter:$dependVersion.base"
+    base_adapter = "com.github.jenly1314.Base:adapter:$dependVersion.base"
     //
     base_util = "com.github.jenly1314.Base:util:$dependVersion.base"
+    // https://github.com/scwang90/SmartRefreshLayout
+    refreshLayout = [
+            refresh_kernel           : "io.github.scwang90:refresh-layout-kernel:2.1.0",      //核心必须依赖
+            refresh_header_material  : "io.github.scwang90:refresh-header-material:2.1.0",    //谷歌刷新头
+//            refresh_header_classics  : "io.github.scwang90:refresh-header-classics:2.1.0",    //经典刷新头
+            refresh_footer_classics  : "io.github.scwang90:refresh-footer-classics:2.1.0",    //经典加载
+    ]
 
     coreLibs = coreDeps.values()
     junitLib = junit
     androidTestLibs = androidTest.values()
     otherLibs = other.values()
+    refreshLibs = refreshLayout.values()
 }

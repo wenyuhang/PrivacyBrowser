@@ -57,6 +57,7 @@ dependencies {
 
     implementation rootProject.ext.base_adapter
     implementation rootProject.ext.base_util
+    implementation rootProject.ext.refreshLibs
 
     // 计算器模块
     implementation project(path: ':LibCalculator')

@@ -15,6 +15,7 @@ import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.ui.vm.BrowserHistoryVMImpl
 import com.wlwork.libframe.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
@@ -36,6 +37,9 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
         return R.layout.activity_browser_history
     }
 
+    // page
+    private var curPage = 1
+
     override fun initData(savedInstanceState: Bundle?) {
         binding.state = this
         // 注册物理键back事件
@@ -46,6 +50,7 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
         with(binding.recyclerView) {
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapter
+            isNestedScrollingEnabled = false
         }
 
         mAdapter.setOnItemClickListener { _, position ->
@@ -53,12 +58,61 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
             callResultIntent(linkStr = item.webLink)
         }
 
-        lifecycleScope.launch {
-            viewModel.getHistory().flowWithLifecycle(lifecycle).collect{
-                Logger.d(it)
-                mAdapter.refreshData(it)
+        binding.layoutRefresh.apply {
+            setEnableLoadMore(false)
+            setOnRefreshListener {
+                Logger.e("刷新了")
+                requestHistoryData(1)
+            }
+            setOnLoadMoreListener {
+                Logger.e("加载了")
+                requestHistoryData(curPage)
             }
         }
+
+
+        viewModel.browserHistoryLiveData.observe(this){
+            Logger.e("===>执行了")
+            this.curPage = it.curPage
+            updateHistoryRecyUI(it.listData, curPage < 2,it.isLoadMore)
+        }
+        requestHistoryData(curPage)
+    }
+
+    /**
+     * 更新recycler
+     */
+    private fun updateHistoryRecyUI(data: List<BrowserHistory>, isRefresh: Boolean, isCanLoadMore: Boolean) {
+        data.let {
+            // 是否为刷新数据
+            if (isRefresh) mAdapter.refreshData(it) else mAdapter.addData(it)
+            // 是否可以加载更多
+            if (isCanLoadMore){
+                binding.layoutRefresh.setEnableLoadMore(true)
+                curPage++
+            }else {
+                binding.layoutRefresh.setEnableLoadMore(false)
+                binding.layoutRefresh.finishLoadMoreWithNoMoreData()
+            }
+            binding.layoutRefresh.closeHeaderOrFooter()
+        }
+
+
+
+        // 是否加载空布局
+        if (mAdapter.itemCount == 0){
+//            if (mAdapter.emptyLayout == null) {
+//                mAdapter.setEmptyView(R.layout.layout_empty)
+//            }
+        }
+    }
+
+    /**
+     * 请求浏览器历史数据
+     */
+    private fun requestHistoryData(curPage: Int){
+        this.curPage = curPage
+        viewModel.getRequestData(curPage, Constants.PAGE_SIZE)
     }
 
     /**
@@ -81,5 +135,11 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
         }
         onBack?.remove()
         finish()
+    }
+
+    override fun hideLoading() {
+        super.hideLoading()
+        Logger.e("执行了")
+        binding.layoutRefresh.closeHeaderOrFooter()
     }
 }

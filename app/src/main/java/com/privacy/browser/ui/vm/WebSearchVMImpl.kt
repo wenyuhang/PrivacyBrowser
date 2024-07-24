@@ -115,7 +115,7 @@ class WebSearchVMImpl @Inject constructor(
     /**
      * 获取搜索历史
      */
-    fun getHistory() = searchHistoryDao.getHistoryFlow(10).filterNotNull()
+    fun getHistory() = searchHistoryDao.getHistoryFlow(30).filterNotNull()
 
 
 

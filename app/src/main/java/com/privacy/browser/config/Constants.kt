@@ -15,6 +15,8 @@ object Constants {
 
     const val TAG = "Jenly"
 
+    const val PAGE_SIZE = 20
+
     const val OIL_PRICE_KEY = "402e469d939079d5bb758fc5ca65967d"
     const val DICTIONARY_KEY = "e38e852fe9307822a50e66763afdc593"
 

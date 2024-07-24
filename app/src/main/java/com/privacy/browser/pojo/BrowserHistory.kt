@@ -2,6 +2,7 @@ package com.privacy.browser.pojo
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
@@ -30,5 +31,5 @@ data class BrowserHistory(
     val webLink: String,
 
     @ColumnInfo(name = "timestamp", typeAffinity = ColumnInfo.TEXT)
-    val timestamp: String
+    val timestamp: String,
 )
