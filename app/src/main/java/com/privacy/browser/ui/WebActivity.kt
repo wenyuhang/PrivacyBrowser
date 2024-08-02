@@ -3,6 +3,7 @@ package com.privacy.browser.ui
 import android.content.Intent
 import android.os.Bundle
 import android.webkit.WebSettings
+import com.orhanobut.logger.Logger
 import com.privacy.browser.R
 import com.privacy.browser.component.overview.CommonWebView
 import com.privacy.browser.component.overview.WebTabManager
@@ -68,6 +69,10 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         binding.btnSearchEngine.setOnClickListener {
             resultLauncher?.launch(Intent(this, BrowserHistoryActivity::class.java))
         }
+        // 跳转至收藏页面
+        binding.btnToolsPlugins.setOnClickListener {
+            resultLauncher?.launch(Intent(this, FavoritesActivity::class.java))
+        }
     }
 
     /**
@@ -77,6 +82,7 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         val cacheWebTab = WebTabManager.getInstance().getCacheWebTab()
         val pageSize = cacheWebTab.size
         viewModel.postWebSize(pageSize)
+        Logger.e("=========$pageSize")
         val wb = cacheWebTab.last()
         mWebView = wb.webView
         mWebView?.apply {

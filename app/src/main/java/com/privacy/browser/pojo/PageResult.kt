@@ -8,11 +8,21 @@ package com.privacy.browser.pojo
  * desc    : 分页数据
  **/
 
-data class PageResult<T>(
+class PageResult<T> {
+    var listData: T? = null
+    var curPage: Int = 1
+    var pageSize: Int = 0
+    var total: Int = 0
+    var isLoadMore: Boolean = false
 
-    val listData : T,
-    val curPage  : Int,
-    val pageSize : Int,
-    val total    : Int,
-    val isLoadMore: Boolean
-)
+    constructor()
+
+    fun setPageData(listData: T, curPage: Int, pageSize: Int, total: Int, isLoadMore: Boolean) {
+        this.listData = listData
+        this.curPage = curPage
+        this.pageSize = pageSize
+        this.total = total
+        this.isLoadMore = isLoadMore
+    }
+}
+

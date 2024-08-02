@@ -22,12 +22,13 @@
             android:exported="false"/>
         <activity android:name=".ui.BrowserRouterActivity"
             android:exported="false"/>
-        <activity
-            android:name=".ui.BrowserActivity"
+        <activity android:name=".ui.BrowserActivity"
             android:exported="false" />
         <activity android:name=".ui.WebSearchActivity"
             android:exported="false"/>
         <activity android:name=".ui.BrowserHistoryActivity"
+            android:exported="false"/>
+        <activity android:name=".ui.FavoritesActivity"
             android:exported="false"/>
         <activity android:name=".ui.MainActivity"
             android:exported="false"/>
@@ -83,7 +84,8 @@
 <!--            </intent-filter>-->
 <!--        </activity-alias>-->
 
-
+        <meta-data android:name="com.privacy.browser.config.AppConfigModule"
+            android:value="FrameConfigModule"/>
     </application>
 
 </manifest>

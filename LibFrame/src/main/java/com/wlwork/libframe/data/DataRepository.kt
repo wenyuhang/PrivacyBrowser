@@ -113,6 +113,6 @@ open class DataRepository @Inject constructor() : Repository {
     }
 
     companion object {
-        private const val DEFAULT_DATABASE_NAME = "room.dp"
+        private const val DEFAULT_DATABASE_NAME = "room.db"
     }
 }

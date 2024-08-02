@@ -3,11 +3,15 @@ package com.privacy.browser
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import androidx.room.Room
+import androidx.room.migration.Migration
 import com.king.retrofit.retrofithelper.RetrofitHelper
 import com.privacy.browser.config.Constants
+import com.privacy.browser.repository.database.AppDataBase
 import com.scwang.smart.refresh.footer.ClassicsFooter
 import com.scwang.smart.refresh.header.MaterialHeader
 import com.scwang.smart.refresh.layout.SmartRefreshLayout
+import com.wlwork.libframe.base.BaseApplication
 import dagger.hilt.android.HiltAndroidApp
 
 /**
@@ -18,7 +22,7 @@ import dagger.hilt.android.HiltAndroidApp
  * desc    : application
  **/
 @HiltAndroidApp
-class App : Application(){
+class App : BaseApplication(){
     lateinit var curActivity: Activity
     companion object {
         //生产环境、开发环境区分 true:开发 false:生产
@@ -35,6 +39,7 @@ class App : Application(){
         SmartRefreshLayout.setDefaultRefreshFooterCreator { context, layout ->
             ClassicsFooter(context)
         }
+
     }
 
     override fun onCreate() {
@@ -43,7 +48,7 @@ class App : Application(){
 
         initConfig()
         // 如果你没有使用FrameConfigModule中的第一中方式初始化BaseUrl，也可以通过第二种方式来设置BaseUrl（二选其一即可）
-        RetrofitHelper.getInstance().setBaseUrl(Constants.BASE_URL)
+//        RetrofitHelper.getInstance().setBaseUrl(Constants.BASE_URL)
 
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks{
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -75,7 +80,10 @@ class App : Application(){
             }
 
         })
+
+//        Room.databaseBuilder(applicationContext,AppDataBase::class.java,"room.dp").addMigrations(*AppDataBase.getMigrations().toVarArgsArray()).build()
     }
+    fun List<Migration>.toVarArgsArray(): Array<Migration> = toList().toTypedArray()
 
     /**
      * 初始化配置

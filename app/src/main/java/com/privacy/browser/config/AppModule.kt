@@ -1,5 +1,8 @@
 package com.privacy.browser.config
 
+import com.privacy.browser.pojo.BrowserHistory
+import com.privacy.browser.pojo.Favorites
+import com.privacy.browser.pojo.PageResult
 import com.privacy.browser.webconfig.WebViewUtils
 import dagger.Module
 import dagger.Provides
@@ -23,4 +26,17 @@ object AppModule {
     fun provideWebViewUtils(): WebViewUtils {
         return WebViewUtils()
     }
+
+    @Singleton
+    @Provides
+    fun providePageResult(): PageResult<List<BrowserHistory>> {
+        return PageResult()
+    }
+
+    @Singleton
+    @Provides
+    fun providePageResultFavorites(): PageResult<List<Favorites>> {
+        return PageResult()
+    }
+
 }

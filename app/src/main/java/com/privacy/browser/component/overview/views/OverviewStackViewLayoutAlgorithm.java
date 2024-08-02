@@ -201,7 +201,7 @@ public class OverviewStackViewLayoutAlgorithm {
             //fx[xStep]：每个阶段的y值  （0->1）
 
             fx[xStep] = logFunc(x);
-            Log.e("fx[xStep]: ","fx[xStep] : "+xStep  +"  "+fx[xStep]);
+//            Log.e("fx[xStep]: ","fx[xStep] : "+xStep  +"  "+fx[xStep]);
             x += step;
         }
 

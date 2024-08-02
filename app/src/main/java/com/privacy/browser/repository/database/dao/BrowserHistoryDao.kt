@@ -1,9 +1,13 @@
 package com.privacy.browser.repository.database.dao
 
+import android.util.Log
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.orhanobut.logger.Logger
 import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.pojo.SearchHistory
 import kotlinx.coroutines.flow.Flow
@@ -34,11 +38,29 @@ interface BrowserHistoryDao {
 
     @Query("select COUNT(1) from browser_history")
     suspend fun getTotalCount(): Int
+
     /**
      * 获取历史数据对应的[Flow]
      * @param size 获取历史纪录的条数
      * @param offset 指针开始位置
      */
     @Query("select * from browser_history order by timestamp desc limit :size offset :offset")
-    fun getHistoryFlow(size: Int,offset: Int): Flow<List<BrowserHistory>?>
+    fun getHistoryFlow(size: Int, offset: Int): Flow<List<BrowserHistory>?>
+
+
+    // 执行 SQL 文件中的 DML 语句  执行批量数据
+    @Transaction
+    fun executeSqlFileStatements(db: SupportSQLiteDatabase, sqlStatements: List<String>) {
+        var count: Int = 1
+        for (statement in sqlStatements) {
+            if (!statement.isNullOrEmpty()) {
+                db.execSQL(statement)
+            }
+            Log.e("TAG", "executeSqlFileStatements: $count    $statement")
+            count++
+        }
+        Logger.e("sql执行完成")
+    }
+
+
 }

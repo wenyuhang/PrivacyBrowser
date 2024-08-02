@@ -2,48 +2,41 @@ package com.privacy.browser.ui
 
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orhanobut.logger.Logger
 import com.privacy.browser.R
-import com.privacy.browser.ui.adapter.BindingAdapter
 import com.privacy.browser.config.Constants
-import com.privacy.browser.databinding.ActivityBrowserHistoryBinding
+import com.privacy.browser.databinding.ActivityFavoritesBinding
 import com.privacy.browser.pojo.BrowserHistory
-import com.privacy.browser.ui.vm.BrowserHistoryVMImpl
+import com.privacy.browser.pojo.Favorites
+import com.privacy.browser.ui.adapter.BindingAdapter
+import com.privacy.browser.ui.vm.FavoritesVMImpl
 import com.wlwork.libframe.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.nio.charset.StandardCharsets
 
 /**
  * author  : WYH
  * e-mail  : wenyuhang@qinjiakonggu.com
- * date    : 2024/6/21 18:09
+ * date    : 2024/7/26 17:25
  * version : 1.0.0
- * desc    :
+ * desc    : 收藏页
  **/
 
 @AndroidEntryPoint
-class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserHistoryBinding>() {
-
-    private val mAdapter by lazy {
-        BindingAdapter<BrowserHistory>(getContext(), R.layout.item_broswer_history)
-    }
-
+class FavoritesActivity : BaseActivity<FavoritesVMImpl,ActivityFavoritesBinding>() {
     override fun getLayoutId(): Int {
-        return R.layout.activity_browser_history
+        return R.layout.activity_favorites
     }
 
     // page
     private var curPage = 1
+    private val mAdapter by lazy {
+        BindingAdapter<Favorites>(getContext(), R.layout.item_favorites)
+    }
 
     override fun initData(savedInstanceState: Bundle?) {
         binding.state = this
@@ -77,7 +70,7 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
         }
 
 
-        viewModel.browserHistoryLiveData.observe(this){
+        viewModel.favoritesLiveData.observe(this){
             Logger.e("===>执行了")
             this.curPage = it.curPage
             updateHistoryRecyUI(it.listData, curPage < 2,it.isLoadMore)
@@ -88,24 +81,13 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
             clipService.setPrimaryClip(ClipData.newPlainText("text/plain", browserHistory.webLink))
             Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show()
         }
-
-        // 此方法是执行批量数据插入的  慎用!!!
-//        viewModel.executeSql(readSqlFile(this, "browser_history.sql").split(";"))
     }
 
-    private fun readSqlFile(context: Context, fileName: String): String {
-        val inputStream = context.assets.open(fileName)
-        val size = inputStream.available()
-        val buffer = ByteArray(size)
-        inputStream.read(buffer)
-        inputStream.close()
-        return String(buffer, StandardCharsets.UTF_8)
-    }
 
     /**
      * 更新recycler
      */
-    private fun updateHistoryRecyUI(data: List<BrowserHistory>?, isRefresh: Boolean, isCanLoadMore: Boolean) {
+    private fun updateHistoryRecyUI(data: List<Favorites>?, isRefresh: Boolean, isCanLoadMore: Boolean) {
         data?.let {
             // 是否为刷新数据
             if (isRefresh) mAdapter.refreshData(it) else mAdapter.addData(it)
@@ -160,9 +142,4 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
         finish()
     }
 
-    override fun hideLoading() {
-        super.hideLoading()
-        Logger.e("执行了")
-        binding.layoutRefresh.closeHeaderOrFooter()
-    }
 }

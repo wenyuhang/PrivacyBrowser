@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.privacy.browser.pojo.Favorites" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        >
+
+
+        <ImageView
+            android:id="@+id/img_history"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@mipmap/ic_baidu"
+            app:layout_constraintBottom_toBottomOf="@id/tv_web_link"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_web_title" />
+
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginRight="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@mipmap/ic_delete"
+            app:layout_constraintBottom_toBottomOf="@id/tv_web_link"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_web_title" />
+
+
+        <TextView
+            android:id="@+id/tv_web_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@{data.webTitle}"
+            app:layout_constraintLeft_toRightOf="@id/img_history"
+            app:layout_constraintRight_toLeftOf="@id/btn_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="@dimen/text_size_14sp"
+            android:textColor="@color/color_FF_333333"
+            tools:text="百度一下" />
+
+        <TextView
+            android:id="@+id/tv_web_link"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="@{data.webLink}"
+            android:paddingLeft="1dp"
+            app:layout_constraintLeft_toRightOf="@id/img_history"
+            app:layout_constraintRight_toLeftOf="@id/btn_delete"
+            app:layout_constraintTop_toBottomOf="@id/tv_web_title"
+            android:textSize="@dimen/text_size_12sp"
+            android:textColor="@color/color_FF_A9A9A9"
+            tools:text="https://map.baidu.com/@12967503,4838434,15z535123132131" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

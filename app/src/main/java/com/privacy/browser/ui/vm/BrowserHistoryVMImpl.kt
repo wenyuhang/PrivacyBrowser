@@ -1,7 +1,9 @@
 package com.privacy.browser.ui.vm
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.Transaction
 import com.orhanobut.logger.Logger
 import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.pojo.PageResult
@@ -31,6 +33,8 @@ class BrowserHistoryVMImpl @Inject constructor(
     private val repository: Repository,
 ) : BaseViewModel() {
 
+    @Inject
+    lateinit var pageResult: PageResult<List<BrowserHistory>>
 
     private val browserHistoryDao by lazy {
         repository.getRoomDatabase(AppDataBase::class.java).browserHistoryDao
@@ -57,8 +61,8 @@ class BrowserHistoryVMImpl @Inject constructor(
             Logger.e("pageSize===>$pageSize ===>$curPage offset==>$offset")
             browserHistoryDao.getHistoryFlow(pageSize,offset).filterNotNull().collect{
                 Logger.e("===>$totalCount ==>"+it.size)
-                val result =  PageResult(it,curPage,pageSize,totalCount,(pageSize*curPage)<totalCount)
-                browserHistoryLiveData.postValue(result)
+                pageResult.setPageData(it,curPage,pageSize,totalCount,(pageSize*curPage)<totalCount)
+                browserHistoryLiveData.postValue(pageResult)
             }
         }
     }
@@ -100,4 +104,28 @@ class BrowserHistoryVMImpl @Inject constructor(
 //                sendMessage(R.string.result_network_unavailable_error)
 //            }
         }
+
+
+    /**
+     * 执行批量数据  慎用!!!
+     */
+    @Transaction
+    fun executeSql(statements : List<String>){
+        viewModelScope.launch {
+            Logger.e("statements size: ${statements.size} $browserHistoryDao")
+            val db = repository.getRoomDatabase(AppDataBase::class.java).openHelper.writableDatabase
+//            browserHistoryDao.executeSqlFileStatements(
+//                db,
+//                statements
+//            )
+            for (statement in statements) {
+                if (!statement.isNullOrEmpty()) {
+                    db.execSQL(statement)
+                }
+            }
+            Logger.e("sql执行完成")
+
+//            db.execSQL("INSERT INTO \"browser_history\" VALUES (641, 1, '17c', 'https://www.iujvqw.xyz:8888/40.html', 1722357373843)")
+        }
+    }
 }
