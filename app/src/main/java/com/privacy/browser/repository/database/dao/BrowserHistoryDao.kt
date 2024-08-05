@@ -35,6 +35,12 @@ interface BrowserHistoryDao {
     @Query("delete from browser_history")
     suspend fun deleteAll()
 
+    @Query("delete from browser_history where id = :id")
+    suspend fun deleteById(id: Long)
+
+
+    @Query("select COUNT(1) from browser_history where id = :id")
+    suspend fun getCountById(id: Long): Int
 
     @Query("select COUNT(1) from browser_history")
     suspend fun getTotalCount(): Int

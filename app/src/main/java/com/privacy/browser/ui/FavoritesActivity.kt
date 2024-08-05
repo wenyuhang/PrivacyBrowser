@@ -4,14 +4,11 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.orhanobut.logger.Logger
 import com.privacy.browser.R
 import com.privacy.browser.config.Constants
 import com.privacy.browser.databinding.ActivityFavoritesBinding
-import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.pojo.Favorites
 import com.privacy.browser.ui.adapter.BindingAdapter
 import com.privacy.browser.ui.vm.FavoritesVMImpl
@@ -52,7 +49,7 @@ class FavoritesActivity : BaseActivity<FavoritesVMImpl,ActivityFavoritesBinding>
         }
 
         mAdapter.setOnItemClickListener { _, position ->
-            val item = mAdapter.getItem(position) as BrowserHistory
+            val item = mAdapter.getItem(position) as Favorites
             callResultIntent(linkStr = item.webLink)
         }
 
@@ -60,26 +57,25 @@ class FavoritesActivity : BaseActivity<FavoritesVMImpl,ActivityFavoritesBinding>
         binding.layoutRefresh.apply {
             setEnableLoadMore(false)
             setOnRefreshListener {
-                Logger.e("刷新了")
                 requestHistoryData(1)
             }
             setOnLoadMoreListener {
-                Logger.e("加载了")
                 requestHistoryData(curPage)
             }
         }
 
 
         viewModel.favoritesLiveData.observe(this){
-            Logger.e("===>执行了")
             this.curPage = it.curPage
             updateHistoryRecyUI(it.listData, curPage < 2,it.isLoadMore)
         }
+
         requestHistoryData(curPage)
+
         mAdapter.setOnItemLongClickListener { browserHistory, _ ->
             val clipService = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             clipService.setPrimaryClip(ClipData.newPlainText("text/plain", browserHistory.webLink))
-            Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show()
+            showToast("复制成功")
         }
     }
 

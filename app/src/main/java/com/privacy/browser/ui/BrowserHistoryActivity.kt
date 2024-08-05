@@ -5,10 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orhanobut.logger.Logger
 import com.privacy.browser.R
@@ -19,8 +16,6 @@ import com.privacy.browser.pojo.BrowserHistory
 import com.privacy.browser.ui.vm.BrowserHistoryVMImpl
 import com.wlwork.libframe.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.nio.charset.StandardCharsets
 
 /**
@@ -58,36 +53,43 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
             isNestedScrollingEnabled = false
         }
 
-        mAdapter.setOnItemClickListener { _, position ->
-            val item = mAdapter.getItem(position) as BrowserHistory
-            callResultIntent(linkStr = item.webLink)
+        mAdapter.apply {
+            setOnItemClickListener { _, position ->
+                val item = mAdapter.getItem(position) as BrowserHistory
+                callResultIntent(linkStr = item.webLink)
+            }
+            setOnItemLongClickListener { browserHistory, _ ->
+                val clipService = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                clipService.setPrimaryClip(ClipData.newPlainText("text/plain", browserHistory.webLink))
+                showToast("复制成功")
+            }
+            setChildIdList(listOf(R.id.btn_delete))
+            setOnItemChildClickListener { v, position ->
+                if (v.id == R.id.btn_delete){
+                    val item = mAdapter.getItem(position) as BrowserHistory
+                    Logger.e("v 点击删除了 $position  id: ${item.id}")
+                    viewModel.deleteHistoryById(item.id)
+                }
+            }
         }
 
 
         binding.layoutRefresh.apply {
             setEnableLoadMore(false)
             setOnRefreshListener {
-                Logger.e("刷新了")
                 requestHistoryData(1)
             }
             setOnLoadMoreListener {
-                Logger.e("加载了")
                 requestHistoryData(curPage)
             }
         }
 
 
         viewModel.browserHistoryLiveData.observe(this){
-            Logger.e("===>执行了")
             this.curPage = it.curPage
             updateHistoryRecyUI(it.listData, curPage < 2,it.isLoadMore)
         }
         requestHistoryData(curPage)
-        mAdapter.setOnItemLongClickListener { browserHistory, _ ->
-            val clipService = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            clipService.setPrimaryClip(ClipData.newPlainText("text/plain", browserHistory.webLink))
-            Toast.makeText(this, "复制成功", Toast.LENGTH_SHORT).show()
-        }
 
         // 此方法是执行批量数据插入的  慎用!!!
 //        viewModel.executeSql(readSqlFile(this, "browser_history.sql").split(";"))
@@ -162,7 +164,6 @@ class BrowserHistoryActivity: BaseActivity<BrowserHistoryVMImpl,ActivityBrowserH
 
     override fun hideLoading() {
         super.hideLoading()
-        Logger.e("执行了")
         binding.layoutRefresh.closeHeaderOrFooter()
     }
 }

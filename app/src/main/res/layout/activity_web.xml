@@ -39,7 +39,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:paddingLeft="45dp"
-            android:paddingRight="70dp"
+            android:paddingRight="120dp"
             android:text="@{vm.pageWebTitle}"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
@@ -66,11 +66,23 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:onClick="@{()->state.toRefreshPage()}"
-            android:paddingLeft="20dp"
+            android:paddingLeft="10dp"
             android:paddingRight="20dp"
             android:src="@mipmap/ic_page_refresh"
             app:layout_constraintBottom_toBottomOf="@id/btn_show_web_url"
             app:layout_constraintRight_toRightOf="@id/btn_show_web_url"
+            app:layout_constraintTop_toTopOf="@id/btn_show_web_url" />
+
+        <ImageView
+            android:id="@+id/btn_favorites_link"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:onClick="@{()->vm.toFavoritesLink()}"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:src="@mipmap/ic_collect"
+            app:layout_constraintBottom_toBottomOf="@id/btn_show_web_url"
+            app:layout_constraintRight_toLeftOf="@id/btn_page_refresh"
             app:layout_constraintTop_toTopOf="@id/btn_show_web_url" />
 
         <FrameLayout

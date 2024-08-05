@@ -32,6 +32,13 @@ interface FavoritesDao {
     @Query("delete from favorites")
     suspend fun deleteAll()
 
+    /**
+     * 根据id 删除数据
+     */
+    @Query("delete from favorites where web_link = :link")
+    suspend fun deleteByLink(link: String)
+
+
 
     @Query("select COUNT(1) from favorites")
     suspend fun getTotalCount(): Int
@@ -42,4 +49,7 @@ interface FavoritesDao {
      */
     @Query("select * from favorites order by timestamp desc limit :size offset :offset")
     fun getHistoryFlow(size: Int,offset: Int): Flow<List<Favorites>?>
+
+    @Query("SELECT COUNT(1) FROM favorites WHERE web_link = :webLink")
+    suspend fun countByWebLink(webLink: String): Int
 }

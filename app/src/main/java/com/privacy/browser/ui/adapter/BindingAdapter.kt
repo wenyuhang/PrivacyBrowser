@@ -1,8 +1,6 @@
 package com.privacy.browser.ui.adapter
 
 import android.content.Context
-import android.view.View
-import android.view.View.OnLongClickListener
 import androidx.databinding.ViewDataBinding
 import com.king.base.adapter.BaseRecyclerAdapter
 import com.orhanobut.logger.Logger
@@ -36,8 +34,18 @@ class BindingAdapter<T> : BaseRecyclerAdapter<T, BindingHolder<ViewDataBinding>>
                 true
             }
         }
+        // child 添加点击回调
+        childIdList?.let {
+            if (it.isNotEmpty()){
+                it.forEach {id ->
+                    holder.addOnClickListener(id)
+                }
+            }
+        }
+
     }
 
+    private var childIdList: List<Int>? = null
     private var onItemLongClickListener: ((T, Int) -> Unit)? = null
     fun setOnItemLongClickListener(operation: (T, Int) -> Unit) {
         onItemLongClickListener = operation
@@ -63,5 +71,9 @@ class BindingAdapter<T> : BaseRecyclerAdapter<T, BindingHolder<ViewDataBinding>>
             listData.clear()
         }
         notifyDataSetChanged()
+    }
+
+    fun setChildIdList(listOf: List<Int>) {
+        childIdList = listOf
     }
 }

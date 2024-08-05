@@ -74,6 +74,12 @@
             android:textColor="@color/color_FF_A9A9A9"
             tools:text="https://map.baidu.com/@12967503,4838434,15z535123132131" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_web_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="tv_web_title,tv_web_link"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,6 +1,6 @@
 package com.privacy.browser.ui.vm
 
-import android.util.Log
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Transaction
@@ -11,13 +11,10 @@ import com.privacy.browser.repository.database.AppDataBase
 import com.wlwork.libframe.base.BaseViewModel
 import com.wlwork.libframe.data.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
+
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 /**
@@ -64,6 +61,28 @@ class BrowserHistoryVMImpl @Inject constructor(
                 pageResult.setPageData(it,curPage,pageSize,totalCount,(pageSize*curPage)<totalCount)
                 browserHistoryLiveData.postValue(pageResult)
             }
+        }
+    }
+
+    /**
+     *
+     */
+    fun deleteHistoryById(id: Long){
+        viewModelScope.launch {
+            val count = browserHistoryDao.getCountById(id)
+            if (count>0){
+                browserHistoryDao.deleteById(id)
+                val queryCount = browserHistoryDao.getCountById(id)
+                if (queryCount>0){
+                    sendMessage("删除失败")
+                }else{
+                    sendMessage("删除成功")
+                }
+
+            }else{
+                sendMessage("数据不存在")
+            }
+
         }
     }
 

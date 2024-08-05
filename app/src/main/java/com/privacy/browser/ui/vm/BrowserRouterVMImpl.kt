@@ -7,12 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
-import com.orhanobut.logger.Logger
 import com.privacy.browser.App
 import com.privacy.browser.R
 import com.privacy.browser.component.overview.RecentListInterface
@@ -90,7 +86,7 @@ class BrowserRouterVMImpl @Inject constructor(
                     it.itemView.findViewById<ImageView>(R.id.tab_icon).setImageDrawable(wb.tabIcon)
                     val recentContent = it.itemView.findViewById<ImageView>(R.id.recent_content)
                     wb.picture?.let {picture ->
-                        Logger.i("picture地址： $picture")
+//                        Logger.i("picture地址： $picture")
                         recentContent.setImageDrawable(picture)
                     }
 

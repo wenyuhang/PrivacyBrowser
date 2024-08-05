@@ -63,7 +63,6 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         // 跳转至搜索页面
         binding.btnShowWebUrl.setOnClickListener {
             resultLauncher?.launch(viewModel.getBuildIntent(this))
-
         }
         // 跳转至历史浏览页面
         binding.btnSearchEngine.setOnClickListener {
@@ -72,6 +71,11 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
         // 跳转至收藏页面
         binding.btnToolsPlugins.setOnClickListener {
             resultLauncher?.launch(Intent(this, FavoritesActivity::class.java))
+        }
+
+        viewModel.linkIsFavorites.observe(this){
+            val resId = if (it) R.mipmap.ic_collect_checked else R.mipmap.ic_collect
+            binding.btnFavoritesLink.setImageResource(resId)
         }
     }
 
@@ -92,7 +96,7 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
 //                    Logger.d("onPageFinished >>> $url \n $pageTitle")
                 viewModel.postWebTitle(pageTitle)
                 // 插入数据库表
-                viewModel.insertSerarchHistory(title = pageTitle, link = url)
+                viewModel.insertBrowserHistory(title = pageTitle, link = url)
                 // 检查是否可以回退[左返回，右返回]
                 checkWebBack(mWebView)
             }
@@ -105,6 +109,8 @@ class WebActivity : BaseActivity<WebVMImpl, ActivityWebBinding>() {
 
             addShouldOverrideUrl {
                 viewModel.postWebTitle(it)
+                // 重置web状态
+                viewModel.resetWebStates()
             }
 
             var pageTitle = title
