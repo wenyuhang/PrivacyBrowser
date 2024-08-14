@@ -29,7 +29,7 @@ class WebTabManager private constructor(){
         }
     }
 
-    val cacheWebTab = LinkedList<WebBean>()
+    private val cacheWebTab = LinkedList<WebBean>()
 
     fun divideAllWebView(){
         for (wb in cacheWebTab){
